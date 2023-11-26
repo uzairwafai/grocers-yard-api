@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
         type: Number,
         required: [true, 'Mobile number is required']
     },
-    roleID: {
+    roleId: {
         type: Number,
         default: 1
     },
