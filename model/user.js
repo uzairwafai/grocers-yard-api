@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    mobile: {
+    phoneNo: {
         type: Number,
         required: [true, 'Mobile number is required']
     },
