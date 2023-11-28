@@ -1,8 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser= require('body-parser');
 const homeRouter = require('./routes/homeRouter');
 const userRouter = require('./routes/userRouter');
-const bodyParser= require('body-parser');
+const authtenticate=require('./middlewares/auth');
 
 
 const app = express();
@@ -16,5 +17,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/grocers_yard')
     .then(() => { console.log('connected to db') })
     .catch(err => console.log(err));
 app.use(bodyParser.json());
-app.use('/', homeRouter);
 app.use('/users', userRouter);
+app.use(authtenticate.tokenAuth);
+app.use('/', homeRouter);
