@@ -1,10 +1,16 @@
 const userRepo = require('../repositories/userRepo');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 
 const signUp = async (req, res) => {
     try {
         const body = req.body;
+
+        plainPassword = body.password;
+        hashedPassword = await bcrypt.hash(plainPassword, 3);
+        body.password = hashedPassword;
+
         await userRepo.add(body);
         res.status(201).send('User Created');
     }
@@ -27,9 +33,10 @@ const signUp = async (req, res) => {
 const signIn = async (req, res) => {
     try {
         const user = await userRepo.get(req.body);
-        if (user) {
+        const hashCheckPassword = await bcrypt.compare(req.body.password, user.password);
+        if (hashCheckPassword) {
             const token = jwt.sign({ email: user.email, roleId: user.roleId }, 'secret', { expiresIn: '1d' });
-            res.status(200).json({ Token: token });
+            res.status(200).json({ token: token });
         } else {
             res.status(401).send('Wrong email or password');
         }

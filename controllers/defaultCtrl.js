@@ -4,21 +4,11 @@ const home = (req, res) => {
 };
 
 const health = (req, res) => {
-    if (req.role == 2) {
-        res.status(200);
-        res.json({
-            Status: "Up and Running"
-        })
-
-    } else {
-        res.status(401).send('Your role is not to access here')
-    }
+    res.status(200);
+    res.json({
+        Status: "Up and Running"
+    })
 }
-
-
-
-
-
 
 module.exports = {
     home,

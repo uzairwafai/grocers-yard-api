@@ -1,4 +1,5 @@
 const User = require('../model/user');
+const Role = require('../model/role');
 
 const add = (payload) => {
     const user = new User(payload);
@@ -6,13 +7,16 @@ const add = (payload) => {
 };
 
 const get = (payload) => {
-    return User.findOne({ email: payload.email, password: payload.password }, { __v: 0, password: 0 });
+    return User.findOne({ email: payload.email }, { __v: 0 });
 };
 
-
+const getRole = (roleId) => {
+    return Role.findOne({ id: roleId });
+}
 
 
 module.exports = {
     add,
-    get
+    get,
+    getRole
 }
