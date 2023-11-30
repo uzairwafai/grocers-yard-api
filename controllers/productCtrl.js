@@ -56,8 +56,42 @@ async function getById(req, res) {
   }
 }
 
+const remove = async (req, res) => {
+  try {
+    if (req.role.canManageSystem || canUpdateProducts) {
+      const id = req.params.id;
+      await productRepo.remove(id);
+      res.status(204).send("Product Deleted Succesfully");
+    } else {
+      res.status(401).send("Your role does'nt allow you to proceed");
+    }
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+const put = async (req, res) => {
+  try {
+    if (req.role.canManageSystem || req.role.canUpdateProducts) {
+      const id = req.params.id;
+      const payload = req.body;
+      const updatedProduct = await productRepo.updateAll(id, payload);
+      res.status(200).json({
+        status: "Updated succesfully",
+        updatedProduct: updatedProduct, // check why is this not sent
+      });
+    } else {
+      res.status(401).send("Your role does'nt allow you to proceed");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+};
 module.exports = {
   get,
   add,
   getById,
+  remove,
+  put,
 };
