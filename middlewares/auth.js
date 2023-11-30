@@ -12,7 +12,7 @@ async function tokenAuth(req, res, next) {
             const decodedToken = jwt.verify(token, 'secret');  //same secret string as at the time of generation
             const roleId = decodedToken.roleId;
             const role = await userRepo.getRole(roleId);
-            req.role = role;
+            req.role = role || {};
             next();
         }
     }

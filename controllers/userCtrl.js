@@ -7,8 +7,8 @@ const signUp = async (req, res) => {
     try {
         const body = req.body;
 
-        plainPassword = body.password;
-        hashedPassword = await bcrypt.hash(plainPassword, 3);
+        const plainPassword = body.password;
+        const hashedPassword = await bcrypt.hash(plainPassword, 3);
         body.password = hashedPassword;
 
         await userRepo.add(body);

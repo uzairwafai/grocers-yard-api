@@ -13,8 +13,17 @@ const get = (page, size, pageSize) => {
 const getById = (id) => {
     return Product.findById(id, { __v: 0 });
 };
-const count = () => {
-    return Product.count();
+const count = (search) => {
+const filter={
+    $or:[
+        
+        {name:new RegExp(search,'i')},
+        {price},
+        {stock}
+    ]
+}
+
+    return Product.count(filter);
 }
 
 module.exports = {

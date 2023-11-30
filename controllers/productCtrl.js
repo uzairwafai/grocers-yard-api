@@ -3,20 +3,29 @@ const productRepo = require('../repositories/productRepo');
 
 const get = async (req, res) => {
     try {
-       // const productCount = await productRepo.count();
-        page = req.params.page || 1;
-        size = req.params.size || 2;
-        
+        const page = req.params.page || 1;
+        const size = req.params.size || 10;
+        const search = req.query.search || '';
+       // const productCount = await productRepo.count(search);
+        //const pages = Math.ceil(productCount / size);
         if (req.role.canReadProducts) {
-            const data = await productRepo.get(page,size);
+            const data = await productRepo.get(page, size);
+            const response = {
+                metaData: {
+                    //pages: pages,
+                  //  rows: productCount
+                },
+                productData: data
+            }
             res.status(200);
-            res.json(data);
+            res.json(response);
         }
         else {
-            res.status(401).send('Your role does\'nt allow you to proceed');
+            res.status(401).send('You don\'t have permission to do this action');
         }
     }
     catch (err) {
+        console.error(err);
         res.status(500);
         res.send('Internal srver error')
     }
@@ -50,6 +59,7 @@ async function getById(req, res) {
         }
     }
     catch (err) {
+
         res.status(500).send('Internal Server Error');
     }
 
