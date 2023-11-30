@@ -5,15 +5,10 @@ const home = (req, res) => {
 
 const health = (req, res) => {
     res.status(200);
-    res.json ( {
+    res.json({
         Status: "Up and Running"
     })
 }
-
-
-
-
-
 
 module.exports = {
     home,
