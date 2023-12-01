@@ -1,11 +1,8 @@
 const Product = require("../model/product");
 
-const count = (search) => {
-  const filter = {
-    $or: [{ name: new RegExp(search, "i") }, { price }, { stock }],
-  };
-
-  return Product.count(filter);
+const count = () => {
+ 
+  return Product.countDocuments();
 };
 
 const add = (payload) => {
@@ -28,7 +25,7 @@ const remove = (id) => {
 
 const updateAll = (id, payload) => {
   console.log(payload);
-  Product.updateOne({ _id: id }, payload);
+  return Product.updateOne({ _id: id }, payload);
   //Product.findByIdAndUpdate(id, payload);
 };
 

@@ -5,14 +5,14 @@ const get = async (req, res) => {
     const page = req.params.page || 1;
     const size = req.params.size || 10;
     const search = req.query.search || "";
-    // const productCount = await productRepo.count(search);
-    //const pages = Math.ceil(productCount / size);
+    const productCount = await productRepo.count();
+    const pages = Math.ceil(productCount / size);
     if (req.role.canReadProducts) {
       const data = await productRepo.get(page, size);
       const response = {
         metaData: {
-          //pages: pages,
-          //  rows: productCount
+          pages: pages,
+          rows: productCount,
         },
         productData: data,
       };
@@ -78,7 +78,6 @@ const put = async (req, res) => {
       const updatedProduct = await productRepo.updateAll(id, payload);
       res.status(200).json({
         status: "Updated succesfully",
-        updatedProduct: updatedProduct, // check why is this not sent
       });
     } else {
       res.status(401).send("Your role does'nt allow you to proceed");
