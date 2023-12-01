@@ -5,6 +5,7 @@ const homeRouter = require("./routes/homeRouter");
 const userRouter = require("./routes/userRouter");
 const authtenticate = require("./middlewares/auth");
 const productRouter = require("./routes/productRouter");
+const orderRouter=require('./routes/orderRouter')
 
 const app = express();
 
@@ -23,3 +24,4 @@ app.use("/users", userRouter);
 app.use("/", homeRouter);
 app.use(authtenticate.tokenAuth);
 app.use("/api/products", productRouter);
+app.use('/api/orders',orderRouter)

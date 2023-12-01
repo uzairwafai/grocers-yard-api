@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const schema = new mongoose.Schema(
   {
+    id: Number,
     firstName: {
       type: String,
       required: [true, "First name is required"],
