@@ -8,6 +8,6 @@ const schema = new mongoose.Schema({
     type: String,
     enum: ["success", "failure"],
   },
-});
+},{timestamps:true});
 
 module.exports = new mongoose.model("orders", schema);
