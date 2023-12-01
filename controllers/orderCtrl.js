@@ -1,4 +1,5 @@
 const orderRepo = require("../repositories/orderRepo");
+const productRepo = require("../repositories/productRepo");
 
 const get = async (req, res) => {
   try {
@@ -17,7 +18,7 @@ const add = async (req, res) => {
     req.body.userId = req.userId;
     const productId = req.body.products[0].productId;
     const quantity = req.body.products[0].quantity;
-    const product = await orderRepo.dataFetch(productId);
+    const product = await productRepo.dataFetch(productId);
     if (!product) {
       res.status(404).send("Product not found");
     } else if (product.stock < quantity) {
@@ -27,7 +28,7 @@ const add = async (req, res) => {
       res.status(200).json({ details: "Order Placed Successfully" });
     }
   } catch (err) {
-    console.error(err)
+    console.error(err);
     res.status(500).send("Internal server error");
   }
 };
