@@ -12,12 +12,14 @@ async function tokenAuth(req, res, next) {
       const roleId = decodedToken.roleId;
       const role = await userRepo.getRole(roleId);
       req.role = role || {};
+      const userId = decodedToken.id;
+      req.userId = userId;
       next();
     }
   } catch (err) {
     res.status(401).send("Not Authorized");
   }
-};
+}
 
 module.exports = {
   tokenAuth,

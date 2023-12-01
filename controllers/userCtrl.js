@@ -46,7 +46,7 @@ const signIn = async (req, res) => {
     );
     if (hashCheckPassword) {
       const token = jwt.sign(
-        { email: user.email, roleId: user.roleId },
+        { email: user.email, roleId: user.roleId,id:user._id },
         "secret",
         { expiresIn: "1d" }
       );

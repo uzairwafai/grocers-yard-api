@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const schema = new mongoose.Schema({
   id: Number,
-  userId: Number,
+  userId:String,
   products: [{ productId: String, stock: Number }],
   quantity:Number,
   totalAmount: Number,
