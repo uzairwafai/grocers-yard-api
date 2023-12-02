@@ -25,6 +25,10 @@ const add = async (req, res) => {
       res.status(406).send("Insufficient quantity");
     } else {
       await orderRepo.add(req.body);
+      console.log(req.body);
+      product.stock = product.stock - quantity;
+      console.log(product.stock);
+      await productRepo.patch(productId, { stock: product.stock });
       res.status(200).json({ details: "Order Placed Successfully" });
     }
   } catch (err) {

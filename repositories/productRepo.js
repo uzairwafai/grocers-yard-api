@@ -1,7 +1,6 @@
 const Product = require("../model/product");
 
 const count = () => {
- 
   return Product.countDocuments();
 };
 
@@ -30,7 +29,9 @@ const updateAll = (id, payload) => {
 };
 const dataFetch = (productId) => {
   return Product.findById(productId);
-  
+};
+const patch = (id, payload) => {
+  return Product.findByIdAndUpdate(id, payload);
 };
 module.exports = {
   add,
@@ -39,5 +40,6 @@ module.exports = {
   count,
   remove,
   updateAll,
-  dataFetch
+  dataFetch,
+  patch,
 };
