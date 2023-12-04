@@ -27,9 +27,7 @@ const updateAll = (id, payload) => {
   return Product.updateOne({ _id: id }, payload);
   //Product.findByIdAndUpdate(id, payload);
 };
-const dataFetch = (productId) => {
-  return Product.findById(productId);
-};
+
 const patch = (id, payload) => {
   return Product.findByIdAndUpdate(id, payload);
 };
@@ -40,6 +38,5 @@ module.exports = {
   count,
   remove,
   updateAll,
-  dataFetch,
   patch,
 };

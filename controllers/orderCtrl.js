@@ -16,23 +16,31 @@ const get = async (req, res) => {
 const add = async (req, res) => {
   try {
     req.body.userId = req.userId;
-    const productId = req.body.products[0].productId;
-    const quantity = req.body.products[0].quantity;
-    const product = await productRepo.dataFetch(productId);
-    if (!product) {
-      res.status(404).send("Product not found");
-    } else if (product.stock < quantity) {
-      res.status(406).send("Insufficient quantity");
+    if (req.body.products[0]) {
+      const productId = req.body.products[0].productId;
+      if (productId.length == 24) {
+        const quantity = req.body.products[0].quantity;
+        const product = await productRepo.getById(productId);
+        if (!product) {
+          res.status(404).send("Product not found");
+        } else if (product.stock < quantity) {
+          req.body.status = "failure";
+          await orderRepo.add(req.body);
+          res.status(406).send("Insufficient quantity");
+        } else {
+          req.body.status = "success";
+          await orderRepo.add(req.body);
+          product.stock = product.stock - quantity;
+          await productRepo.patch(productId, { stock: product.stock });
+          res.status(200).json({ details: "Order Placed Successfully" });
+        }
+      } else {
+        res.status(400).send("product length must me 24");
+      }
     } else {
-      await orderRepo.add(req.body);
-      console.log(req.body);
-      product.stock = product.stock - quantity;
-      console.log(product.stock);
-      await productRepo.patch(productId, { stock: product.stock });
-      res.status(200).json({ details: "Order Placed Successfully" });
+      res.status(400).send("Invalid request");
     }
   } catch (err) {
-    console.error(err);
     res.status(500).send("Internal server error");
   }
 };
