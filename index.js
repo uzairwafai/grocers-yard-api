@@ -6,6 +6,7 @@ const userRouter = require("./routes/userRouter");
 const authtenticate = require("./middlewares/auth");
 const productRouter = require("./routes/productRouter");
 const orderRouter = require("./routes/orderRouter");
+const categoriesRouter = require("./routes/categoriesRouter");
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.listen(port, () => console.log(`App listening in port: ${port}`));
 async function connect() {
   await mongoose.connect("mongodb://127.0.0.1:27017/grocers_yard");
   console.log("connected to db");
-};
+}
 connect();
 app.use(bodyParser.json());
 app.use("/users", userRouter);
@@ -30,3 +31,4 @@ app.use("/", homeRouter);
 app.use(authtenticate.tokenAuth);
 app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/categories", categoriesRouter);

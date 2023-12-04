@@ -5,6 +5,11 @@ const schema = new mongoose.Schema(
       type: String,
       required: [true, "Product name is required"],
     },
+    categoryId: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     price: {
       type: Number,
       required: true,
