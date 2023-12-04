@@ -7,11 +7,20 @@ const signUp = async (req, res) => {
     const body = req.body;
 
     const plainPassword = body.password;
-    const hashedPassword = await bcrypt.hash(plainPassword, 3);
-    body.password = hashedPassword;
+    console.log(typeof plainPassword);
+    if (plainPassword.length <= 3) {
+      res
+        .status(422)
+        .json({
+          passwordLengthCheck: "Password must me greater than 3 characters",
+        });
+    } else {
+      const hashedPassword = await bcrypt.hash(plainPassword, 3);
+      body.password = hashedPassword;
 
-    await userRepo.add(body);
-    res.status(201).send("User Created");
+      await userRepo.add(body);
+      res.status(201).send("User Created");
+    }
   } catch (err) {
     if (err.message && err.message.indexOf("duplicate key error") > -1) {
       res.status(409).send("Email already Exists");
@@ -37,7 +46,7 @@ const signIn = async (req, res) => {
     );
     if (hashCheckPassword) {
       const token = jwt.sign(
-        { email: user.email, roleId: user.roleId },
+        { email: user.email, roleId: user.roleId,id:user._id },
         "secret",
         { expiresIn: "1d" }
       );

@@ -58,7 +58,7 @@ async function getById(req, res) {
 
 const remove = async (req, res) => {
   try {
-    if (req.role.canManageSystem || canUpdateProducts) {
+    if (req.role.canManageSystem || req.role.canUpdateProducts) {
       const id = req.params.id;
       await productRepo.remove(id);
       res.status(204).send("Product Deleted Succesfully");
