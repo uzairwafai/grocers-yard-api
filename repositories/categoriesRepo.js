@@ -6,7 +6,7 @@ const add = (payload) => {
 };
 
 const get = () => {
-  return Category.find({}, { __v: 0 });
+  return Category.find({}, { __v: 0 }).populate('productId');
 };
 
 const remove = (id) => {

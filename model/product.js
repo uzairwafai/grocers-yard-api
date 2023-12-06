@@ -6,9 +6,9 @@ const schema = new mongoose.Schema(
       required: [true, "Product name is required"],
     },
     categoryId: {
-      type: Number,
+      type: String,
       required: true,
-      default: 0,
+      default: "No parent Category",
     },
     price: {
       type: Number,

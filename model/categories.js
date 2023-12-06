@@ -7,8 +7,14 @@ const schema = mongoose.Schema({
   parentId: {
     type: String,
     required: true,
-    default:'parent category'
+    default: "parent category",
   },
+  productId: [
+    {
+      type: String,
+      ref: "products",
+    },
+  ],
 });
 
 module.exports = new mongoose.model("categories", schema);
