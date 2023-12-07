@@ -1,12 +1,26 @@
 const categoriesRepo = require("../repositories/categoriesRepo");
-
+const ObjectId = require("mongoose").Types.ObjectId;
 const add = async (req, res) => {
   try {
-    if (req.body.parentId && req.body.name.length >= 3) {
-      await categoriesRepo.add(req.body);
-      res.status(201).send("created");
+    if (ObjectId.isValid(req.body.parentId)) {
+      const data = await categoriesRepo.getById(req.body.parentId);
+      console.log(data);
+      if (data) {
+        if (req.body.name.length >= 3) {
+          await categoriesRepo.add(req.body);
+          res.status(201).send("created");
+        } else {
+          res
+            .status(400)
+            .send(
+              "category name must have more than 3 characters and parentId is required"
+            );
+        }
+      } else {
+        res.status(400).send("Parent Id did not match any record");
+      }
     } else {
-      res.status(401).send("category name must have more than 3 characters and parentId is required");
+      res.status(401).send("invalid parentId");
     }
   } catch (err) {
     console.error(err);
@@ -18,7 +32,7 @@ const get = async (req, res) => {
     const data = await categoriesRepo.get();
     res.status(200).json(data);
   } catch (err) {
-    console.error(err)
+    console.error(err);
     res.status(500).send("Internal Server Error");
   }
 };

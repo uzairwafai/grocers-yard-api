@@ -6,8 +6,8 @@ const schema = mongoose.Schema({
   },
   parentId: {
     type: String,
-    required: true,
-    default: "parent category",
+    //required: true,
+    ref: "categories",
   },
   productId: [
     {
