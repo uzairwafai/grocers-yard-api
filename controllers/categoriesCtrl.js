@@ -6,14 +6,14 @@ const add = async (req, res) => {
       const data = await categoriesRepo.getById(req.body.parentId);
       console.log(data);
       if (data) {
-        if (req.body.name.length >= 3) {
+        if (req.body.name && req.body.name.length >= 3) {
           await categoriesRepo.add(req.body);
           res.status(201).send("created");
         } else {
           res
             .status(400)
             .send(
-              "category name must have more than 3 characters and parentId is required"
+              "category name must have more than 2 characters and parentId is required"
             );
         }
       } else {

@@ -5,10 +5,10 @@ const schema = new mongoose.Schema(
       type: String,
       required: [true, "Product name is required"],
     },
-    categoryId: {
+    category: {
       type: String,
       required: true,
-      default: "No parent Category",
+      ref:"categories"
     },
     price: {
       type: Number,

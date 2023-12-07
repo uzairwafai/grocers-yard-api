@@ -9,12 +9,12 @@ const schema = mongoose.Schema({
     //required: true,
     ref: "categories",
   },
-  productId: [
-    {
-      type: String,
-      ref: "products",
-    },
-  ],
+  // productId: [
+  //   {
+  //     type: String,
+  //     ref: "products",
+  //   },
+ // ],
 });
 
 module.exports = new mongoose.model("categories", schema);
