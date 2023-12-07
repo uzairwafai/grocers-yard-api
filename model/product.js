@@ -5,6 +5,11 @@ const schema = new mongoose.Schema(
       type: String,
       required: [true, "Product name is required"],
     },
+    category: {
+      type: String,
+      required: true,
+      ref:"categories"
+    },
     price: {
       type: Number,
       required: true,

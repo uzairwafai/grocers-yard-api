@@ -11,7 +11,7 @@ const add = (payload) => {
 
 const get = (page, size, pageSize) => {
   const recordstoSkip = (page - 1) * size;
-  return Product.find({}, { __v: 0 }).skip(recordstoSkip).limit(size);
+  return Product.find({}, { __v: 0 }).skip(recordstoSkip).limit(size).populate('category');
 };
 
 const getById = (id) => {
