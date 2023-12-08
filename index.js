@@ -7,10 +7,11 @@ const authtenticate = require("./middlewares/auth");
 const productRouter = require("./routes/productRouter");
 const orderRouter = require("./routes/orderRouter");
 const categoriesRouter = require("./routes/categoriesRouter");
+const config = require("./config");
 
 const app = express();
 
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 app.listen(port, () => console.log(`App listening in port: ${port}`));
 
@@ -20,8 +21,10 @@ app.listen(port, () => console.log(`App listening in port: ${port}`));
 //     console.log("connected to db");
 //   })
 //.catch((err) => console.log(err));
+console.log(config.conStr)
 async function connect() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/grocers_yard");
+  // await mongoose.connect("mongodb://127.0.0.1:27017/grocers_yard");
+  await mongoose.connect(config.conStr);
   console.log("connected to db");
 }
 connect();

@@ -3,9 +3,11 @@ const ObjectId = require("mongoose").Types.ObjectId;
 const add = async (req, res) => {
   try {
     if (ObjectId.isValid(req.body.parentId)) {
-      const data = await categoriesRepo.getById(req.body.parentId);
-      console.log(data);
-      if (data) {
+      const parentCategoryData = await categoriesRepo.getById(
+        req.body.parentId
+      );
+      console.log(parentCategoryData);
+      if (parentCategoryData) {
         if (req.body.name && req.body.name.length >= 3) {
           await categoriesRepo.add(req.body);
           res.status(201).send("created");
