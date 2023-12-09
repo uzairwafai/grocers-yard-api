@@ -1,20 +1,34 @@
 const productRepo = require("../repositories/productRepo");
+const categoryRepo = require("../repositories/categoriesRepo");
 
 const get = async (req, res) => {
   try {
     const page = req.params.page || 1;
     const size = req.params.size || 10;
     const search = req.query.search || "";
-    const productCount = await productRepo.count();
+    const productCount = await productRepo.count(search);
     const pages = Math.ceil(productCount / size);
     if (req.role.canReadProducts) {
-      const data = await productRepo.get(page, size);
+      let products = [];
+      if (search) {
+        const regexQuery = new RegExp(search, "i");
+        products = await productRepo.getBySearch(search);
+        if (products.length == 0) {
+          const category = await categoryRepo.getBySearch(search);
+          if (category) {
+            const catId = category._id;
+            products = await productRepo.getByCategoryId(catId);
+          }
+        }
+      } else {
+        const products = await productRepo.get(page, size, search);
+      }
       const response = {
         metaData: {
           pages: pages,
           rows: productCount,
         },
-        productData: data,
+        productData: products,
       };
       res.status(200);
       res.json(response);
