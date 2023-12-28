@@ -9,20 +9,21 @@ const get = async (req, res) => {
     const productCount = await productRepo.count(search);
     const pages = Math.ceil(productCount / size);
     if (req.role.canReadProducts) {
-      let products = [];
-      if (search) {
-        const regexQuery = new RegExp(search, "i");
-        products = await productRepo.getBySearch(search);
-        if (products.length == 0) {
-          const category = await categoryRepo.getBySearch(search);
-          if (category) {
-            const catId = category._id;
-            products = await productRepo.getByCategoryId(catId);
-          }
-        }
-      } else {
-        const products = await productRepo.get(page, size, search);
-      }
+      // let products = [];
+      // if (search) {
+      //   const regexQuery = new RegExp(search, "i");
+      //   products = await productRepo.getBySearch(search);
+      //   if (products.length == 0) {
+      //     const category = await categoryRepo.getBySearch(search);
+      //     if (category) {
+      //       const catId = category._id;
+      //       products = await productRepo.getByCategoryId(catId);
+      //     }
+      //   }
+      // } else {
+      //    products = await productRepo.get(page, size);
+      // }
+      products = await productRepo.get(page, size);
       const response = {
         metaData: {
           pages: pages,
@@ -30,10 +31,11 @@ const get = async (req, res) => {
         },
         productData: products,
       };
+
       res.status(200);
       res.json(response);
     } else {
-      res.status(401).send("You don't have permission to do this action");
+      res.status(401).send("You don't have permission to perform this action");
     }
   } catch (err) {
     console.error(err);

@@ -1,12 +1,11 @@
-const { regexpToText } = require("nodemon/lib/utils");
 const Product = require("../model/product");
-const Categorgy = require("../model/categories");
+const categoryRepo = require("../repositories/categoriesRepo");
 
 const count = (search) => {
   const filter = {
     $or: [
-      { name: new RegExp(search, "i") },
-      { category: new RegExp(search, "i") },
+    //  { name: new RegExp(search, "i") },
+      { category: { $in: categoryRepo.getBySearch(search)} },
     ],
   };
   return Product.countDocuments(filter);
@@ -19,14 +18,16 @@ const add = (payload) => {
 
 const get = (page, size, search) => {
   const recordstoSkip = (page - 1) * size;
-
+  
   const filter = {
+   
     $or: [
-      { name: new RegExp(search, "i") },
-      { category: { $in: Categorgy.find({ name: search }) } },
+      // { name: new RegExp(search, "i") },
+    
+      { category: categoryRepo.getBySearch(search)},
     ],
   };
-
+  console.log(categoryRepo.getBySearch(search))
   return Product.find(filter, { __v: 0 })
     .skip(recordstoSkip)
     .limit(size)

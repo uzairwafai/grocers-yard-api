@@ -21,9 +21,15 @@ const getById = (id) => {
   return Category.findOne({ _id: id });
 };
 
-const getBySearch = (search) => {
-  const regexQuery = new RegExp(search, "i");
-  return Category.findOne({ name: regexQuery });
+const getBySearch = async (search) => {
+  //const regexQuery = new RegExp(search, "i");
+  const category =  await Category.findOne({ name: search });
+  console.log(category)
+  if (category) {
+    return category._id;
+  } else {
+    return [];
+  }
 };
 
 module.exports = {
@@ -32,5 +38,5 @@ module.exports = {
   remove,
   update,
   getById,
-  getBySearch
+  getBySearch,
 };
