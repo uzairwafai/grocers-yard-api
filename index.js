@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const homeRouter = require("./routes/homeRouter");
 const userRouter = require("./routes/userRouter");
 const authtenticate = require("./middlewares/auth");
@@ -27,6 +28,7 @@ async function connect() {
   console.log("connected to db");
 }
 connect();
+app.use(cors());
 app.use(bodyParser.json());
 app.use("/users", userRouter);
 app.use("/", homeRouter);
