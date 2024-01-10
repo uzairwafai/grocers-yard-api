@@ -1,7 +1,14 @@
 const Product = require("../model/product");
+const categoryRepo = require("../repositories/categoriesRepo");
 
-const count = () => {
-  return Product.countDocuments();
+const count = (search) => {
+  const filter = {
+    $or: [
+    //  { name: new RegExp(search, "i") },
+      { category: { $in: categoryRepo.getBySearch(search)} },
+    ],
+  };
+  return Product.countDocuments(filter);
 };
 
 const add = (payload) => {
@@ -9,10 +16,40 @@ const add = (payload) => {
   return product.save();
 };
 
-const get = (page, size, pageSize) => {
+const get = (page, size, search) => {
   const recordstoSkip = (page - 1) * size;
-  return Product.find({}, { __v: 0 }).skip(recordstoSkip).limit(size).populate('category');
+  
+  const filter = {
+   
+    $or: [
+      // { name: new RegExp(search, "i") },
+    
+      { category: categoryRepo.getBySearch(search)},
+    ],
+  };
+  console.log(categoryRepo.getBySearch(search))
+  return Product.find(filter, { __v: 0 })
+    .skip(recordstoSkip)
+    .limit(size)
+    .populate("category");
 };
+
+// const aggregateGet=(search)=>{
+// Product.aggregate(
+//   [
+//     {
+
+//       $match:{$or:[{name:{$regex:new RegExp(search,'i')}}]
+//   },
+
+//   {$lookup:{
+//     from:'categories',
+//     localField:'category',
+//     foreignField:'_id',
+//     as:'populatedCategory'
+//   }
+// }}]
+// )
 
 const getById = (id) => {
   return Product.findById(id, { __v: 0 });
@@ -31,6 +68,14 @@ const updateAll = (id, payload) => {
 const patch = (id, payload) => {
   return Product.findByIdAndUpdate(id, payload);
 };
+
+const getBySearch = (search) => {
+  const regexQuery = new RegExp(search, "i");
+  return Product.find({ name: regexQuery});
+};
+const getByCategoryId = (catId) => {
+  return Product.find({ category: catId }).populate('category');
+};
 module.exports = {
   add,
   get,
@@ -39,4 +84,6 @@ module.exports = {
   remove,
   updateAll,
   patch,
+  getBySearch,
+  getByCategoryId,
 };

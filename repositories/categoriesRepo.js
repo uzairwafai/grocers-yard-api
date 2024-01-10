@@ -6,8 +6,7 @@ const add = (payload) => {
 };
 
 const get = () => {
-  return Category.find({}, { __v: 0 })
-  .populate("parentId");
+  return Category.find({}, { __v: 0 }).populate("parentId");
 };
 
 const remove = (id) => {
@@ -19,7 +18,18 @@ const update = (id, payload) => {
 };
 
 const getById = (id) => {
-  return Category.findOne({_id:id});
+  return Category.findOne({ _id: id });
+};
+
+const getBySearch = async (search) => {
+  //const regexQuery = new RegExp(search, "i");
+  const category =  await Category.findOne({ name: search });
+  console.log(category)
+  if (category) {
+    return category._id;
+  } else {
+    return [];
+  }
 };
 
 module.exports = {
@@ -28,4 +38,5 @@ module.exports = {
   remove,
   update,
   getById,
+  getBySearch,
 };
