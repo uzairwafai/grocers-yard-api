@@ -2,13 +2,14 @@ const productRepo = require("../repositories/productRepo");
 const categoryRepo = require("../repositories/categoriesRepo");
 
 const get = async (req, res) => {
-  try {
+  try 
+  {
     const page = req.params.page || 1;
     const size = req.params.size || 10;
     const search = req.query.search || "";
     const productCount = await productRepo.count(search);
     const pages = Math.ceil(productCount / size);
-    if (req.role.canReadProducts) {
+    // if (req.role.canReadProducts) {
       // let products = [];
       // if (search) {
       //   const regexQuery = new RegExp(search, "i");
@@ -34,10 +35,12 @@ const get = async (req, res) => {
 
       res.status(200);
       res.json(response);
-    } else {
-      res.status(401).send("You don't have permission to perform this action");
-    }
-  } catch (err) {
+    } 
+    // else {
+    //   res.status(401).send("You don't have permission to perform this action");
+    // }
+  // }
+   catch (err) {
     console.error(err);
     res.status(500);
     res.send(err.message);

@@ -2,13 +2,13 @@ const Product = require("../model/product");
 const categoryRepo = require("../repositories/categoriesRepo");
 
 const count = (search) => {
-  const filter = {
-    $or: [
-    //  { name: new RegExp(search, "i") },
-      { category: { $in: categoryRepo.getBySearch(search)} },
-    ],
-  };
-  return Product.countDocuments(filter);
+  // const filter = {
+  //   $or: [
+  //   //  { name: new RegExp(search, "i") },
+  //     { category: { $in: categoryRepo.getBySearch(search)} },
+  //   ],
+  // };
+  return Product.countDocuments();
 };
 
 const add = (payload) => {
@@ -19,16 +19,16 @@ const add = (payload) => {
 const get = (page, size, search) => {
   const recordstoSkip = (page - 1) * size;
   
-  const filter = {
+  // const filter = {
    
-    $or: [
-      // { name: new RegExp(search, "i") },
+  //   $or: [
+  //     // { name: new RegExp(search, "i") },
     
-      { category: categoryRepo.getBySearch(search)},
-    ],
-  };
-  console.log(categoryRepo.getBySearch(search))
-  return Product.find(filter, { __v: 0 })
+  //     { category: categoryRepo.getBySearch(search)},
+  //   ],
+  // };
+  //console.log(categoryRepo.getBySearch(search))
+  return Product.find({}, { __v: 0 })
     .skip(recordstoSkip)
     .limit(size)
     .populate("category");
