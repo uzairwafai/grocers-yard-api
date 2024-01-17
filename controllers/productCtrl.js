@@ -40,7 +40,7 @@ const get = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500);
-    res.send("Internal srver error");
+    res.send(err.message);
   }
 };
 
