@@ -23,8 +23,8 @@ app.listen(port, () => console.log(`App listening in port: ${port}`));
 //   })
 //.catch((err) => console.log(err));
 async function connect() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/grocers_yard");
-  // await mongoose.connect(config.conStr);
+ // await mongoose.connect("mongodb://127.0.0.1:27017/grocers_yard");
+  await mongoose.connect(config.conStr);
   console.log("connected to db");
 }
 connect();
