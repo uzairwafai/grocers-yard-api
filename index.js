@@ -33,6 +33,6 @@ app.use(bodyParser.json());
 app.use("/users", userRouter);
 app.use("/", homeRouter);
 app.use("/api/products", productRouter);
-app.use(authtenticate.tokenAuth);
 app.use("/api/orders", orderRouter);
 app.use("/api/categories", categoriesRouter);
+app.use(authtenticate.tokenAuth);
